@@ -48,6 +48,7 @@ var JjjResourceDetail = (function () {
 
     var header = h("header", "jjj-resource-detail__header");
     header.innerHTML =
+      '<h2 class="jjj-resource-detail__title">京津冀三地资源分布概览 <small class="jjj-resource-detail__title-en">RESOURCE DISTRIBUTION</small></h2>' +
       '<div class="jjj-resource-detail__toolbar">' +
         '<select class="jjj-resource-detail__select" data-ctrl="year"></select>' +
         '<button class="jjj-resource-detail__btn" data-ctrl="back">← 返回</button>' +
@@ -80,16 +81,11 @@ var JjjResourceDetail = (function () {
       '<div class="jjj-resource-detail__compare-title">同年度区域对比 <span data-role="unit"></span></div>' +
       '<div class="jjj-resource-detail__bar-chart" data-chart="bar"></div>';
 
-    // 洞察
-    var insight = h("div", "jjj-resource-detail__insight");
-    insight.setAttribute("data-role", "insight");
-
     body.appendChild(mapZone);
     body.appendChild(side);
 
     root.appendChild(header);
     root.appendChild(body);
-    root.appendChild(insight);
 
     return {
       root: root,
@@ -100,8 +96,7 @@ var JjjResourceDetail = (function () {
       regionSel: side.querySelector("[data-ctrl=region]"),
       currentRegion: side.querySelector("[data-role=current-region]"),
       unitSpan: side.querySelector("[data-role=unit]"),
-      barChart: side.querySelector("[data-chart=bar]"),
-      insight: insight
+      barChart: side.querySelector("[data-chart=bar]")
     };
   }
 
@@ -392,17 +387,10 @@ var JjjResourceDetail = (function () {
     barInst.setOption(option, true);
   }
 
-  /* ==================== 洞察 ==================== */
-  function renderInsight(dom, data, state) {
-    var text = data.insights[state.category] || "";
-    dom.insight.innerHTML = text || "暂无分析";
-  }
-
   /* ==================== 全量渲染 ==================== */
   function renderAll(dom, data, state, geoJson) {
     renderMap(dom, data, state, geoJson);
     renderBar(dom, data, state);
-    renderInsight(dom, data, state);
   }
 
   /* ==================== 事件 ==================== */
