@@ -1,0 +1,673 @@
+/**
+ * jjj-resource-detail.css
+ * 京津冀三地资源分布概览 — 二级详情页样式
+ *
+ * CSS Namespace: jjj-resource-detail__
+ * 所有业务 class 以 .jjj-resource-detail 或 .jjj-resource-detail__ 开头
+ * 测试壳 class module-preview 不得进入此文件
+ */
+
+/* ============================
+   CSS Custom Properties
+   ============================ */
+:root {
+  --bg-page: #031426;
+  --panel-bg: rgba(3, 27, 50, 0.94);
+  --panel-bg-deep: #041a30;
+  --panel-border: rgba(0, 137, 255, 0.65);
+  --blue-main: #0867e8;
+  --blue-bright: #00a8ff;
+  --cyan-main: #12c8ff;
+  --orange-main: #ff8a1f;
+  --green-main: #6fa94f;
+  --purple-main: #7b6de6;
+  --text-primary: #f2f7ff;
+  --text-secondary: #b8c7d9;
+  --text-muted: #7e94ab;
+  --grid-line: rgba(80, 130, 170, 0.18);
+  --radius-panel: 8px;
+  --color-beijing: #ff8a1f;
+  --color-tianjin: #15b9e8;
+  --color-hebei: #6fa94f;
+  --color-jjj-total: #095fd6;
+}
+
+/* ============================
+   根容器
+   ============================ */
+.jjj-resource-detail {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+  color: var(--text-primary);
+  box-shadow: 0 0 24px rgba(0, 100, 220, 0.12), inset 0 0 60px rgba(0, 60, 140, 0.06);
+}
+
+/* ============================
+   Header
+   ============================ */
+.jjj-resource-detail__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 0 16px;
+  height: 48px;
+  background: linear-gradient(180deg, rgba(8, 103, 232, 0.15) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(0, 137, 255, 0.25);
+}
+
+.jjj-resource-detail__title {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jjj-resource-detail__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(8, 103, 232, 0.18);
+  border: 1px solid rgba(0, 137, 255, 0.35);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 12px;
+  padding: 4px 24px 4px 8px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b8c7d9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+
+.jjj-resource-detail__select:hover {
+  border-color: rgba(0, 137, 255, 0.6);
+}
+
+.jjj-resource-detail__select:focus {
+  border-color: var(--blue-bright);
+}
+
+.jjj-resource-detail__btn {
+  appearance: none;
+  background: rgba(8, 103, 232, 0.2);
+  border: 1px solid rgba(0, 137, 255, 0.35);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding: 4px 12px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.jjj-resource-detail__btn:hover {
+  color: var(--text-primary);
+  border-color: var(--blue-bright);
+  background: rgba(8, 103, 232, 0.35);
+}
+
+/* ============================
+   Body — 主体内容
+   ============================ */
+.jjj-resource-detail__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px 8px;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.jjj-resource-detail__body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.jjj-resource-detail__body::-webkit-scrollbar-thumb {
+  background: rgba(0, 137, 255, 0.3);
+  border-radius: 2px;
+}
+
+/* ============================
+   KPI 行
+   ============================ */
+.jjj-resource-detail__kpis {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__kpi-card {
+  background: rgba(4, 26, 48, 0.8);
+  border: 1px solid rgba(0, 137, 255, 0.2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+
+.jjj-resource-detail__kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 6px 6px 0 0;
+}
+
+.jjj-resource-detail__kpi-card--total::before    { background: var(--color-jjj-total); }
+.jjj-resource-detail__kpi-card--beijing::before   { background: var(--color-beijing); }
+.jjj-resource-detail__kpi-card--tianjin::before   { background: var(--color-tianjin); }
+.jjj-resource-detail__kpi-card--hebei::before     { background: var(--color-hebei); }
+.jjj-resource-detail__kpi-card--cross::before     { background: var(--purple-main); }
+
+.jjj-resource-detail__kpi-card:hover {
+  border-color: rgba(0, 137, 255, 0.45);
+}
+
+.jjj-resource-detail__kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__kpi-card--total .jjj-resource-detail__kpi-value   { color: var(--color-jjj-total); }
+.jjj-resource-detail__kpi-card--beijing .jjj-resource-detail__kpi-value  { color: var(--color-beijing); }
+.jjj-resource-detail__kpi-card--tianjin .jjj-resource-detail__kpi-value  { color: var(--color-tianjin); }
+.jjj-resource-detail__kpi-card--hebei .jjj-resource-detail__kpi-value    { color: var(--color-hebei); }
+.jjj-resource-detail__kpi-card--cross .jjj-resource-detail__kpi-value    { color: var(--purple-main); }
+
+.jjj-resource-detail__kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__kpi-unit {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ============================
+   主内容区 — 地图 + 右侧面板
+   ============================ */
+.jjj-resource-detail__main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 8px;
+}
+
+/* ============================
+   地图容器
+   ============================ */
+.jjj-resource-detail__map {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: rgba(4, 26, 48, 0.5);
+  border: 1px solid rgba(0, 137, 255, 0.15);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.jjj-resource-detail__map-chart {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.jjj-resource-detail__map-legend {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px;
+  background: rgba(3, 18, 36, 0.88);
+  border: 1px solid rgba(0, 137, 255, 0.25);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.jjj-resource-detail__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.jjj-resource-detail__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__legend-bar {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: rgba(3, 18, 36, 0.88);
+  border: 1px solid rgba(0, 137, 255, 0.25);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 5;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.jjj-resource-detail__legend-gradient {
+  width: 60px;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(0, 100, 220, 0.2), rgba(0, 168, 255, 0.8));
+}
+
+/* ============================
+   右侧面板
+   ============================ */
+.jjj-resource-detail__side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.jjj-resource-detail__panel-section {
+  background: rgba(4, 26, 48, 0.7);
+  border: 1px solid rgba(0, 137, 255, 0.15);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.jjj-resource-detail__panel-section:first-child {
+  flex: 3;
+}
+
+.jjj-resource-detail__panel-section:last-child {
+  flex: 2;
+}
+
+.jjj-resource-detail__section-title {
+  margin: 0 0 8px;
+  padding: 0 0 6px;
+  border-bottom: 1px solid rgba(0, 137, 255, 0.12);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__chart-area {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* 资源类型筛选项 */
+.jjj-resource-detail__type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__type-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 137, 255, 0.3);
+  background: rgba(8, 103, 232, 0.1);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__type-tag:hover {
+  border-color: var(--blue-bright);
+  color: var(--text-primary);
+}
+
+.jjj-resource-detail__type-tag--active {
+  background: rgba(8, 103, 232, 0.35);
+  border-color: var(--blue-bright);
+  color: var(--text-primary);
+}
+
+/* ============================
+   底部分析区
+   ============================ */
+.jjj-resource-detail__analysis {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 140px;
+}
+
+.jjj-resource-detail__analysis-card {
+  background: rgba(4, 26, 48, 0.7);
+  border: 1px solid rgba(0, 137, 255, 0.15);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: visible;
+}
+
+.jjj-resource-detail__analysis-card .jjj-resource-detail__section-title {
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+}
+
+/* 排名卡片确保最小高度 */
+.jjj-resource-detail__analysis-card:nth-child(2) {
+  min-height: 120px;
+}
+
+.jjj-resource-detail__analysis-chart {
+  flex: 1;
+  min-height: 60px;
+  min-width: 0;
+}
+
+/* 排名列表 */
+.jjj-resource-detail__ranking-list {
+  flex: 1;
+  min-height: 80px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.jjj-resource-detail__ranking-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.jjj-resource-detail__ranking-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 137, 255, 0.3);
+  border-radius: 2px;
+}
+
+.jjj-resource-detail__rank-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 2px 0;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__rank-num {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 3px;
+  flex-shrink: 0;
+  color: #fff;
+  background: rgba(8, 103, 232, 0.5);
+}
+
+.jjj-resource-detail__rank-num--1 { background: var(--color-beijing); }
+.jjj-resource-detail__rank-num--2 { background: var(--color-tianjin); }
+.jjj-resource-detail__rank-num--3 { background: var(--color-hebei); }
+
+.jjj-resource-detail__rank-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+.jjj-resource-detail__rank-bar-wrap {
+  display: block;
+  flex: 1.5;
+  min-width: 30px;
+  height: 10px;
+  background: rgba(0, 60, 120, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.jjj-resource-detail__rank-bar {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.jjj-resource-detail__rank-val {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 洞察列表 */
+.jjj-resource-detail__insight-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.jjj-resource-detail__insight-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.jjj-resource-detail__insight-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 137, 255, 0.3);
+  border-radius: 2px;
+}
+
+.jjj-resource-detail__insight-item {
+  display: flex;
+  gap: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.jjj-resource-detail__insight-icon {
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.jjj-resource-detail__insight-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.jjj-resource-detail__insight-title {
+  font-weight: 600;
+  color: var(--cyan-main);
+  margin-bottom: 1px;
+}
+
+.jjj-resource-detail__insight-text {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ============================
+   当前选中区域标签
+   ============================ */
+.jjj-resource-detail__region-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--cyan-main);
+  background: rgba(18, 200, 255, 0.1);
+  border: 1px solid rgba(18, 200, 255, 0.3);
+  border-radius: 4px;
+}
+
+.jjj-resource-detail__region-badge-close {
+  cursor: pointer;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.jjj-resource-detail__region-badge-close:hover {
+  opacity: 1;
+}
+
+/* ============================
+   响应式 — 中等尺寸
+   ============================ */
+@media (max-width: 1100px) {
+  .jjj-resource-detail__main {
+    grid-template-columns: 1fr 240px;
+  }
+
+  .jjj-resource-detail__kpis {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .jjj-resource-detail__kpi-value {
+    font-size: 20px;
+  }
+
+  .jjj-resource-detail__analysis {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .jjj-resource-detail__analysis-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ============================
+   响应式 — 小尺寸
+   ============================ */
+@media (max-width: 900px) {
+  .jjj-resource-detail__header {
+    height: 42px;
+    padding: 0 10px;
+  }
+
+  .jjj-resource-detail__title {
+    font-size: 15px;
+  }
+
+  .jjj-resource-detail__body {
+    padding: 6px 8px 6px;
+    gap: 6px;
+  }
+
+  .jjj-resource-detail__kpis {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .jjj-resource-detail__main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  .jjj-resource-detail__side-panel {
+    flex-direction: row;
+    max-height: 160px;
+  }
+
+  .jjj-resource-detail__analysis {
+    grid-template-columns: 1fr;
+  }
+
+  .jjj-resource-detail__analysis-card:last-child {
+    grid-column: auto;
+  }
+
+  .jjj-resource-detail__kpi-value {
+    font-size: 18px;
+  }
+}
+
+/* ============================
+   动画
+   ============================ */
+@keyframes jjjResourceDetailFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.jjj-resource-detail__body {
+  animation: jjjResourceDetailFadeIn 0.35s ease-out;
+}
+
+.jjj-resource-detail__kpi-card {
+  animation: jjjResourceDetailFadeIn 0.4s ease-out both;
+}
+
+.jjj-resource-detail__kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.jjj-resource-detail__kpi-card:nth-child(2) { animation-delay: 0.10s; }
+.jjj-resource-detail__kpi-card:nth-child(3) { animation-delay: 0.15s; }
+.jjj-resource-detail__kpi-card:nth-child(4) { animation-delay: 0.20s; }
+.jjj-resource-detail__kpi-card:nth-child(5) { animation-delay: 0.25s; }

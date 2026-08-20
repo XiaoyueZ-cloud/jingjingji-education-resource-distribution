@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>京津冀三地资源分布概览 — Detail View</title>
+
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script>
+    if (typeof echarts === "undefined") {
+      document.addEventListener("DOMContentLoaded", function () {
+        var el = document.getElementById("resource-distribution-detail");
+        if (el) {
+          el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff6b6b;font-size:14px;text-align:center;padding:40px">' +
+            '<div><div style="font-size:18px;font-weight:600;margin-bottom:8px">ECharts 加载失败</div>' +
+            '<div style="color:#b8c7d9">请检查网络连接，确保能访问 cdn.jsdelivr.net</div></div></div>';
+        }
+      });
+    }
+  </script>
+
+  <!-- 模块样式 -->
+  <link rel="stylesheet" href="jjj-resource-detail.css">
+
+  <!--
+    测试壳样式
+    仅用于独立开发调试，不得写入业务模块
+    .module-preview__frame 的尺寸 1200×760 只属于测试壳
+  -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #031426;
+      overflow: hidden;
+    }
+
+    .module-preview {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: #031426;
+    }
+
+    .module-preview__frame {
+      width: 1200px;
+      height: 760px;
+    }
+
+    /*
+      测试尺寸切换（开发调试用）：
+      在浏览器 DevTools 中修改 .module-preview__frame 的 width / height
+      或取消注释以下尺寸之一：
+
+      .module-preview__frame { width: 1000px; height: 680px; }
+      .module-preview__frame { width: 1440px; height: 860px; }
+      .module-preview__frame { width: 900px;  height: 620px; }
+      .module-preview__frame { width: 800px;  height: 560px; }
+    */
+  </style>
+</head>
+<body>
+
+  <main class="module-preview">
+    <div class="module-preview__frame">
+      <!--
+        业务模块容器
+        真正的 "京津冀三地资源分布概览" 二级详情模块
+        width / height 100%，由父容器决定尺寸
+      -->
+      <section id="resource-distribution-detail" class="jjj-resource-detail"></section>
+    </div>
+  </main>
+
+  <!-- Mock 数据 -->
+  <script src="data/jjj-resource-detail.mock.js"></script>
+
+  <!-- GeoJSON 加载器 -->
+  <script src="data/geo/jjj-geo-data.js"></script>
+
+  <!-- 主模块 -->
+  <script src="jjj-resource-detail.js"></script>
+
+  <!-- 独立运行入口 -->
+  <script>
+    (function () {
+      var container = document.getElementById("resource-distribution-detail");
+      if (!container) return;
+
+      var instance = JjjResourceDetail.init(container, mockJjjResourceData, {
+        onBack: function () {
+          console.log("[detail] onBack — return to dashboard overview");
+        },
+        onFilterChange: function (filter) {
+          console.log("[detail] filter changed:", filter);
+        }
+      });
+
+      // 暴露给 DevTools 调试
+      window.__jjjDetail = instance;
+    })();
+  </script>
+
+</body>
+</html>
