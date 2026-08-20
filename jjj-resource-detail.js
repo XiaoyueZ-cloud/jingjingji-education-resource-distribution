@@ -48,7 +48,6 @@ var JjjResourceDetail = (function () {
 
     var header = h("header", "jjj-resource-detail__header");
     header.innerHTML =
-      '<h2 class="jjj-resource-detail__title">京津冀三地资源分布概览 <small class="jjj-resource-detail__title-en">RESOURCE DISTRIBUTION</small></h2>' +
       '<div class="jjj-resource-detail__toolbar">' +
         '<select class="jjj-resource-detail__select" data-ctrl="year"></select>' +
         '<button class="jjj-resource-detail__btn" data-ctrl="back">← 返回</button>' +
