@@ -15,22 +15,27 @@
   // DataV 阿里云 GeoJSON API
   var GEO_API_BASE = "https://geo.datav.aliyun.com/areas_v3/bound/";
 
-  // 京津冀地级市 adcode（2023 行政区划）
-  var JJJ_CITIES = {
-    beijing:  { adcode: "110000", name: "北京市" },
-    tianjin:  { adcode: "120000", name: "天津市" },
-    shijiazhuang: { adcode: "130100", name: "石家庄市" },
-    tangshan:     { adcode: "130200", name: "唐山市" },
-    qinhuangdao:  { adcode: "130300", name: "秦皇岛市" },
-    handan:       { adcode: "130400", name: "邯郸市" },
-    xingtai:      { adcode: "130500", name: "邢台市" },
-    baoding:      { adcode: "130600", name: "保定市" },
-    zhangjiakou:  { adcode: "130700", name: "张家口市" },
-    chengde:      { adcode: "130800", name: "承德市" },
-    cangzhou:     { adcode: "130900", name: "沧州市" },
-    langfang:     { adcode: "131000", name: "廊坊市" },
-    hengshui:     { adcode: "131100", name: "衡水市" }
-  };
+  // 京津冀 GeoJSON 来源配置
+  // 直辖市用 _full 获取区县级边界；省用省 adcode；地级市不加 _full
+  var JJJ_REGIONS = [
+    // 直辖市 → _full 返回各区边界
+    { adcode: "110000_full", name: "北京市", province: "北京" },
+    { adcode: "120000_full", name: "天津市", province: "天津" },
+    // 河北省 → 返回省轮廓（用于底色）
+    { adcode: "130000", name: "河北省", province: "河北" },
+    // 河北各地级市 → 返回市轮廓
+    { adcode: "130100", name: "石家庄市", province: "河北" },
+    { adcode: "130200", name: "唐山市", province: "河北" },
+    { adcode: "130300", name: "秦皇岛市", province: "河北" },
+    { adcode: "130400", name: "邯郸市", province: "河北" },
+    { adcode: "130500", name: "邢台市", province: "河北" },
+    { adcode: "130600", name: "保定市", province: "河北" },
+    { adcode: "130700", name: "张家口市", province: "河北" },
+    { adcode: "130800", name: "承德市", province: "河北" },
+    { adcode: "130900", name: "沧州市", province: "河北" },
+    { adcode: "131000", name: "廊坊市", province: "河北" },
+    { adcode: "131100", name: "衡水市", province: "河北" }
+  ];
 
   // 用于判断城市属于哪个省
   function getProvince(name) {
@@ -44,12 +49,9 @@
    * @returns {Promise<Object>} ECharts 注册用的 GeoJSON
    */
   function fetchJjjGeoJson() {
-    var entries = Object.keys(JJJ_CITIES);
-
-    // 并行获取所有城市 GeoJSON
-    var promises = entries.map(function (key) {
-      var city = JJJ_CITIES[key];
-      var url = GEO_API_BASE + city.adcode + ".json";
+    // 并行获取所有区域 GeoJSON
+    var promises = JJJ_REGIONS.map(function (region) {
+      var url = GEO_API_BASE + region.adcode + ".json";
       return fetch(url)
         .then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
@@ -60,15 +62,13 @@
           if (geojson && geojson.features) {
             geojson.features.forEach(function (f) {
               f.properties = f.properties || {};
-              f.properties.province = getProvince(city.name);
-              if (!f.properties.name) {
-                f.properties.name = city.name;
-              }
+              f.properties.province = region.province;
             });
           }
           return geojson;
         })
-        .catch(function () {
+        .catch(function (err) {
+          console.warn("[jjj-geo] Failed to load " + region.name + ": " + err.message);
           return null;
         });
     });
@@ -284,7 +284,7 @@
   root.JjjGeoData = {
     fetchGeoJson: fetchJjjGeoJson,
     buildFallback: buildFallbackGeoJson,
-    JJJ_CITIES: JJJ_CITIES
+    JJJ_REGIONS: JJJ_REGIONS
   };
 
 })(window);
