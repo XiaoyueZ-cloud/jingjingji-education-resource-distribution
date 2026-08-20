@@ -11,10 +11,10 @@ var mockJjjResourceData = {
 
   // 指标分类
   categories: [
-    { key: "education", name: "教育资源", unit: "所" },
-    { key: "employment", name: "就业人口", unit: "万人" },
-    { key: "gdp", name: "GDP", unit: "亿元" },
-    { key: "population", name: "常住人口", unit: "万人" }
+    { key: "higherEd", name: "高校资源", unit: "所" },
+    { key: "basicEd", name: "基础教育", unit: "所" },
+    { key: "vocational", name: "职业教育", unit: "所" },
+    { key: "research", name: "科研资源", unit: "所" }
   ],
 
   // 区域数据（北京整体、天津整体、河北分市）
@@ -22,49 +22,49 @@ var mockJjjResourceData = {
     {
       name: "北京市", province: "北京", coord: [116.40, 39.90],
       values: {
-        2025: { education: 928, employment: 1120, gdp: 43760, population: 2188 },
-        2024: { education: 905, employment: 1080, gdp: 41610, population: 2185 },
-        2023: { education: 880, employment: 1040, gdp: 39580, population: 2180 }
+        2025: { higherEd: 312, basicEd: 1680, vocational: 128, research: 420 },
+        2024: { higherEd: 305, basicEd: 1650, vocational: 122, research: 400 },
+        2023: { higherEd: 298, basicEd: 1620, vocational: 118, research: 380 }
       }
     },
     {
       name: "天津市", province: "天津", coord: [117.20, 39.13],
       values: {
-        2025: { education: 562, employment: 680, gdp: 17210, population: 1364 },
-        2024: { education: 548, employment: 660, gdp: 16390, population: 1360 },
-        2023: { education: 530, employment: 640, gdp: 15690, population: 1355 }
+        2025: { higherEd: 56, basicEd: 860, vocational: 95, research: 115 },
+        2024: { higherEd: 55, basicEd: 845, vocational: 92, research: 108 },
+        2023: { higherEd: 54, basicEd: 830, vocational: 88, research: 100 }
       }
     },
     { name: "石家庄市", province: "河北", coord: [114.51, 38.04],
-      values: { 2025: { education: 420, employment: 520, gdp: 7800, population: 1120 }, 2024: { education: 405, employment: 500, gdp: 7200, population: 1115 }, 2023: { education: 390, employment: 480, gdp: 6800, population: 1110 } } },
+      values: { 2025: { higherEd: 44, basicEd: 520, vocational: 78, research: 35 }, 2024: { higherEd: 43, basicEd: 510, vocational: 75, research: 33 }, 2023: { higherEd: 42, basicEd: 500, vocational: 72, research: 30 } } },
     { name: "唐山市", province: "河北", coord: [118.18, 39.63],
-      values: { 2025: { education: 280, employment: 380, gdp: 8900, population: 770 }, 2024: { education: 270, employment: 365, gdp: 8400, population: 768 }, 2023: { education: 260, employment: 350, gdp: 7900, population: 765 } } },
+      values: { 2025: { higherEd: 14, basicEd: 380, vocational: 52, research: 18 }, 2024: { higherEd: 14, basicEd: 372, vocational: 50, research: 17 }, 2023: { higherEd: 13, basicEd: 365, vocational: 48, research: 15 } } },
     { name: "保定市", province: "河北", coord: [115.46, 38.87],
-      values: { 2025: { education: 260, employment: 340, gdp: 4500, population: 920 }, 2024: { education: 250, employment: 325, gdp: 4200, population: 918 }, 2023: { education: 240, employment: 310, gdp: 3900, population: 915 } } },
+      values: { 2025: { higherEd: 18, basicEd: 410, vocational: 45, research: 12 }, 2024: { higherEd: 18, basicEd: 402, vocational: 43, research: 11 }, 2023: { higherEd: 17, basicEd: 395, vocational: 41, research: 10 } } },
     { name: "廊坊市", province: "河北", coord: [116.68, 39.52],
-      values: { 2025: { education: 220, employment: 300, gdp: 3800, population: 550 }, 2024: { education: 210, employment: 285, gdp: 3500, population: 546 }, 2023: { education: 200, employment: 270, gdp: 3200, population: 542 } } },
+      values: { 2025: { higherEd: 12, basicEd: 290, vocational: 38, research: 15 }, 2024: { higherEd: 12, basicEd: 282, vocational: 36, research: 14 }, 2023: { higherEd: 11, basicEd: 275, vocational: 34, research: 12 } } },
     { name: "邯郸市", province: "河北", coord: [114.49, 36.61],
-      values: { 2025: { education: 200, employment: 280, gdp: 4100, population: 940 }, 2024: { education: 192, employment: 268, gdp: 3800, population: 936 }, 2023: { education: 185, employment: 255, gdp: 3500, population: 932 } } },
+      values: { 2025: { higherEd: 10, basicEd: 350, vocational: 42, research: 8 }, 2024: { higherEd: 10, basicEd: 342, vocational: 40, research: 7 }, 2023: { higherEd: 9, basicEd: 335, vocational: 38, research: 6 } } },
     { name: "沧州市", province: "河北", coord: [116.86, 38.31],
-      values: { 2025: { education: 180, employment: 250, gdp: 4200, population: 730 }, 2024: { education: 172, employment: 240, gdp: 3900, population: 728 }, 2023: { education: 165, employment: 230, gdp: 3600, population: 725 } } },
+      values: { 2025: { higherEd: 8, basicEd: 310, vocational: 35, research: 6 }, 2024: { higherEd: 8, basicEd: 302, vocational: 33, research: 5 }, 2023: { higherEd: 7, basicEd: 295, vocational: 31, research: 5 } } },
     { name: "邢台市", province: "河北", coord: [114.50, 37.07],
-      values: { 2025: { education: 150, employment: 210, gdp: 2500, population: 710 }, 2024: { education: 144, employment: 200, gdp: 2300, population: 708 }, 2023: { education: 138, employment: 190, gdp: 2100, population: 705 } } },
+      values: { 2025: { higherEd: 6, basicEd: 260, vocational: 28, research: 4 }, 2024: { higherEd: 6, basicEd: 252, vocational: 27, research: 4 }, 2023: { higherEd: 6, basicEd: 245, vocational: 25, research: 3 } } },
     { name: "衡水市", province: "河北", coord: [115.67, 37.74],
-      values: { 2025: { education: 120, employment: 170, gdp: 1800, population: 420 }, 2024: { education: 115, employment: 162, gdp: 1650, population: 418 }, 2023: { education: 110, employment: 155, gdp: 1500, population: 415 } } },
+      values: { 2025: { higherEd: 4, basicEd: 220, vocational: 22, research: 3 }, 2024: { higherEd: 4, basicEd: 215, vocational: 21, research: 3 }, 2023: { higherEd: 4, basicEd: 210, vocational: 20, research: 2 } } },
     { name: "张家口市", province: "河北", coord: [114.89, 40.77],
-      values: { 2025: { education: 110, employment: 150, gdp: 1700, population: 410 }, 2024: { education: 105, employment: 143, gdp: 1550, population: 408 }, 2023: { education: 100, employment: 136, gdp: 1400, population: 405 } } },
+      values: { 2025: { higherEd: 5, basicEd: 200, vocational: 20, research: 4 }, 2024: { higherEd: 5, basicEd: 195, vocational: 19, research: 4 }, 2023: { higherEd: 5, basicEd: 190, vocational: 18, research: 3 } } },
     { name: "承德市", province: "河北", coord: [117.96, 40.95],
-      values: { 2025: { education: 100, employment: 140, gdp: 1600, population: 335 }, 2024: { education: 95, employment: 133, gdp: 1480, population: 333 }, 2023: { education: 90, employment: 126, gdp: 1350, population: 330 } } },
+      values: { 2025: { higherEd: 4, basicEd: 180, vocational: 18, research: 3 }, 2024: { higherEd: 4, basicEd: 175, vocational: 17, research: 3 }, 2023: { higherEd: 4, basicEd: 170, vocational: 16, research: 2 } } },
     { name: "秦皇岛市", province: "河北", coord: [119.60, 39.94],
-      values: { 2025: { education: 90, employment: 120, gdp: 2000, population: 315 }, 2024: { education: 86, employment: 114, gdp: 1850, population: 313 }, 2023: { education: 82, employment: 108, gdp: 1700, population: 310 } } }
+      values: { 2025: { higherEd: 8, basicEd: 160, vocational: 15, research: 5 }, 2024: { higherEd: 8, basicEd: 155, vocational: 14, research: 5 }, 2023: { higherEd: 7, basicEd: 150, vocational: 13, research: 4 } } }
   ],
 
   // 洞察文本（mock）
   // TODO: 后续根据真实统计数据动态生成
   insights: {
-    education: "<strong>教育格局：</strong>北京高校与科研资源高度集中，天津职业教育特色突出，河北基础教育覆盖面广但优质资源相对不足。",
-    employment: "<strong>就业特征：</strong>北京第三产业就业占比超80%，津冀制造业就业比重较高，廊坊受益于京津外溢效应就业增长较快。",
-    gdp: "<strong>经济总量：</strong>北京GDP遥遥领先，唐山因工业基础雄厚居河北首位，石家庄紧随其后。",
-    population: "<strong>人口分布：</strong>京津冀总人口约1.1亿，北京常住人口趋于稳定，河北各市人口外流压力仍存。"
+    higherEd: "<strong>高校资源：</strong>北京拥有全国最密集的高校群，985/211院校数量遥遥领先；天津高校数量适中但质量较高；河北高校资源相对匮乏，优质高教资源外流明显。",
+    basicEd: "<strong>基础教育：</strong>京津冀基础教育总量庞大，河北因人口基数大学校数量最多，但优质中小学资源仍高度集中于京津两地。",
+    vocational: "<strong>职业教育：</strong>天津职业教育全国领先，拥有国家职业教育改革创新示范区；北京职业教育规模较小但层次较高；河北职教覆盖面广但办学水平参差不齐。",
+    research: "<strong>科研资源：</strong>北京集中了全国最多的国家级科研院所和重点实验室，天津滨海新区科研资源增长较快，河北科研投入和产出仍有较大提升空间。"
   }
 };
