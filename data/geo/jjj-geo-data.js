@@ -15,10 +15,12 @@
   // DataV 阿里云 GeoJSON API
   var GEO_API_BASE = "https://geo.datav.aliyun.com/areas_v3/bound/";
 
-  // 京津冀 GeoJSON 来源配置（全部使用 _full 获取完整子级边界）
+  // 京津冀 GeoJSON 来源配置
+  // 直辖市：_full → 各区县边界（详细）
+  // 河北地级市：不加 _full → 整体市界（完整轮廓）
   var JJJ_REGIONS = [
-    { adcode: "110000", name: "北京市", province: "北京" },
-    { adcode: "120000", name: "天津市", province: "天津" },
+    { adcode: "110000_full", name: "北京市", province: "北京" },
+    { adcode: "120000_full", name: "天津市", province: "天津" },
     { adcode: "130100", name: "石家庄市", province: "河北" },
     { adcode: "130200", name: "唐山市", province: "河北" },
     { adcode: "130300", name: "秦皇岛市", province: "河北" },
@@ -46,7 +48,7 @@
   function fetchJjjGeoJson() {
     // 并行获取所有区域 GeoJSON
     var promises = JJJ_REGIONS.map(function (region) {
-      var url = GEO_API_BASE + region.adcode + "_full.json";
+      var url = GEO_API_BASE + region.adcode + ".json";
       return fetch(url)
         .then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
