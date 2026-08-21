@@ -282,6 +282,31 @@
   flex-shrink: 0;
 }
 
+/* 统计指标说明 */
+.jjj-resource-detail__indicator {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-left: 2px solid var(--jjj-cyan);
+  background: rgba(5, 63, 113, .2);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__indicator-label {
+  color: #7aa5c9;
+  font-size: 10px;
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__indicator-value {
+  color: var(--jjj-cyan);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .jjj-resource-detail__region-select {
   width: 100%;
   height: 48px;
