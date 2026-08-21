@@ -102,11 +102,36 @@ var JjjResourceDetail = (function () {
 
   /* ==================== 状态 ==================== */
   function createState(data) {
+    var cat0 = data.categories[0];
     return {
       year: data.currentYear || 2025,
-      category: data.categories[0].key,
+      category: cat0.key,
+      subCategory: cat0.subs ? cat0.subs[0].key : null,
       selectedRegion: data.regions[0].name
     };
+  }
+
+  /* 获取当前实际数据 key */
+  function getDataKey(state, data) {
+    if (state.subCategory) return state.subCategory;
+    return state.category;
+  }
+
+  function getDataUnit(state, data) {
+    if (state.subCategory) {
+      for (var i = 0; i < data.categories.length; i++) {
+        var cat = data.categories[i];
+        if (cat.key === state.category && cat.subs) {
+          for (var j = 0; j < cat.subs.length; j++) {
+            if (cat.subs[j].key === state.subCategory) return cat.subs[j].unit || cat.unit;
+          }
+        }
+      }
+    }
+    for (var i = 0; i < data.categories.length; i++) {
+      if (data.categories[i].key === state.category) return data.categories[i].unit;
+    }
+    return "";
   }
 
   /* ==================== 下拉填充 ==================== */
@@ -139,9 +164,28 @@ var JjjResourceDetail = (function () {
   function renderTabs(bar, data, state) {
     bar.innerHTML = "";
     data.categories.forEach(function (cat) {
-      var btn = h("button", "jjj-resource-detail__tab" + (cat.key === state.category ? " jjj-resource-detail__tab--active" : ""), cat.name);
-      btn.setAttribute("data-cat", cat.key);
-      bar.appendChild(btn);
+      if (cat.subs) {
+        // 有子选项的 tab：按钮 + 下拉
+        var wrap = h("span", "jjj-resource-detail__tab-wrap");
+        var btn = h("button", "jjj-resource-detail__tab" + (cat.key === state.category ? " jjj-resource-detail__tab--active" : ""), cat.name);
+        btn.setAttribute("data-cat", cat.key);
+        wrap.appendChild(btn);
+        var subSel = h("select", "jjj-resource-detail__sub-select");
+        subSel.setAttribute("data-parent-cat", cat.key);
+        cat.subs.forEach(function (sub) {
+          var opt = document.createElement("option");
+          opt.value = sub.key;
+          opt.textContent = sub.name;
+          if (sub.key === state.subCategory) opt.selected = true;
+          subSel.appendChild(opt);
+        });
+        wrap.appendChild(subSel);
+        bar.appendChild(wrap);
+      } else {
+        var btn = h("button", "jjj-resource-detail__tab" + (cat.key === state.category ? " jjj-resource-detail__tab--active" : ""), cat.name);
+        btn.setAttribute("data-cat", cat.key);
+        bar.appendChild(btn);
+      }
     });
   }
 
@@ -159,12 +203,8 @@ var JjjResourceDetail = (function () {
     echarts.registerMap("jjj", geoJson);
 
     var year = state.year;
-    var cat = state.category;
-    var catObj;
-    for (var ci = 0; ci < data.categories.length; ci++) {
-      if (data.categories[ci].key === cat) { catObj = data.categories[ci]; break; }
-    }
-    var unit = catObj ? catObj.unit : "";
+    var cat = getDataKey(state, data);
+    var unit = getDataUnit(state, data);
 
     // 地图着色数据
     var mapData = data.regions.map(function (r) {
@@ -185,8 +225,21 @@ var JjjResourceDetail = (function () {
           if (!p.data) return p.name;
           var d = p.data;
           var color = COLORS[d.province] || "#1d87ff";
+          var catName = "";
+          for (var ci = 0; ci < data.categories.length; ci++) {
+            if (data.categories[ci].key === state.category) {
+              if (data.categories[ci].subs) {
+                for (var si = 0; si < data.categories[ci].subs.length; si++) {
+                  if (data.categories[ci].subs[si].key === cat) { catName = data.categories[ci].subs[si].name; break; }
+                }
+              } else {
+                catName = data.categories[ci].name;
+              }
+              break;
+            }
+          }
           return '<div style="font-weight:700;color:' + color + ';margin-bottom:4px">' + d.name + '</div>' +
-            '<div>' + (catObj ? catObj.name : "") + '：<b>' + fmt(d.value) + '</b> ' + unit + '</div>';
+            '<div>' + catName + '：<b>' + fmt(d.value) + '</b> ' + unit + '</div>';
         }
       }),
       visualMap: {
@@ -289,12 +342,8 @@ var JjjResourceDetail = (function () {
     if (!barInst) return;
 
     var year = state.year;
-    var cat = state.category;
-    var catObj;
-    for (var ci = 0; ci < data.categories.length; ci++) {
-      if (data.categories[ci].key === cat) { catObj = data.categories[ci]; break; }
-    }
-    var unit = catObj ? catObj.unit : "";
+    var cat = getDataKey(state, data);
+    var unit = getDataUnit(state, data);
 
     // 获取当前区域的同类别数据，按值排序
     var regs = data.regions.slice();
@@ -312,6 +361,20 @@ var JjjResourceDetail = (function () {
       if (names[si] === sel) { selIdx = si; break; }
     }
 
+    var catName = "";
+    for (var ci = 0; ci < data.categories.length; ci++) {
+      if (data.categories[ci].key === state.category) {
+        if (data.categories[ci].subs) {
+          for (var si = 0; si < data.categories[ci].subs.length; si++) {
+            if (data.categories[ci].subs[si].key === cat) { catName = data.categories[ci].subs[si].name; break; }
+          }
+        } else {
+          catName = data.categories[ci].name;
+        }
+        break;
+      }
+    }
+
     dom.unitSpan.textContent = unit;
 
     var option = {
@@ -324,7 +387,7 @@ var JjjResourceDetail = (function () {
           var idx = p.dataIndex;
           var color = colors[idx];
           return '<div style="font-weight:700;color:' + color + '">' + names[idx] + '</div>' +
-            '<div>' + (catObj ? catObj.name : "") + '：<b>' + fmt(values[idx]) + '</b> ' + unit + '</div>';
+            '<div>' + catName + '：<b>' + fmt(values[idx]) + '</b> ' + unit + '</div>';
         }
       }),
       grid: { left: 72, right: 36, top: 10, bottom: 24 },
@@ -415,9 +478,32 @@ var JjjResourceDetail = (function () {
       var btn = e.target.closest("[data-cat]");
       if (!btn) return;
       var s = getState();
-      s.category = btn.getAttribute("data-cat");
+      var newCat = btn.getAttribute("data-cat");
+      s.category = newCat;
+      var data = dataRef();
+      for (var ci = 0; ci < data.categories.length; ci++) {
+        if (data.categories[ci].key === newCat && data.categories[ci].subs) {
+          s.subCategory = data.categories[ci].subs[0].key;
+          break;
+        }
+        if (data.categories[ci].key === newCat && !data.categories[ci].subs) {
+          s.subCategory = null;
+          break;
+        }
+      }
+      renderAll(dom, data, s, geoRef());
+      if (opts.onFilterChange) opts.onFilterChange({ year: s.year, category: s.category, subCategory: s.subCategory });
+    });
+
+    // 子选项下拉
+    on(dom.tabsBar, "change", function (e) {
+      var sel = e.target.closest("[data-parent-cat]");
+      if (!sel) return;
+      var s = getState();
+      s.category = sel.getAttribute("data-parent-cat");
+      s.subCategory = sel.value;
       renderAll(dom, dataRef(), s, geoRef());
-      if (opts.onFilterChange) opts.onFilterChange({ year: s.year, category: s.category });
+      if (opts.onFilterChange) opts.onFilterChange({ year: s.year, category: s.category, subCategory: s.subCategory });
     });
 
     // 区域下拉
