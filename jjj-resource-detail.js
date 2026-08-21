@@ -74,6 +74,10 @@ var JjjResourceDetail = (function () {
         '<div><label>区域选择</label><br><small>REGION SELECT</small></div>' +
         '<span data-role="current-region">点击地图选择区域</span>' +
       '</div>' +
+      '<div class="jjj-resource-detail__indicator" data-role="indicator">' +
+        '<span class="jjj-resource-detail__indicator-label">统计指标</span>' +
+        '<span class="jjj-resource-detail__indicator-value" data-role="indicator-value"></span>' +
+      '</div>' +
       '<div class="jjj-resource-detail__region-select-wrap">' +
         '<select class="jjj-resource-detail__region-select" data-ctrl="region"></select>' +
         '<span class="jjj-resource-detail__region-arrow"></span>' +
@@ -95,6 +99,7 @@ var JjjResourceDetail = (function () {
       mapChart: mapChart,
       regionSel: side.querySelector("[data-ctrl=region]"),
       currentRegion: side.querySelector("[data-role=current-region]"),
+      indicatorValue: side.querySelector("[data-role=indicator-value]"),
       unitSpan: side.querySelector("[data-role=unit]"),
       barChart: side.querySelector("[data-chart=bar]")
     };
@@ -132,6 +137,29 @@ var JjjResourceDetail = (function () {
       if (data.categories[i].key === state.category) return data.categories[i].unit;
     }
     return "";
+  }
+
+  /* ==================== 统计指标说明 ==================== */
+  var INDICATOR_MAP = {
+    higherEd:         "各市普通高等学校数量",
+    basicEd:          "各市中小学学校数量",
+    researchPlatform: "各市省级重点实验室数量",
+    teacher_primary:     "各市小学专任教师数",
+    teacher_middle:      "各市初中专任教师数",
+    teacher_high:        "各市高中专任教师数",
+    teacher_vocational:  "各市中等职业学校专任教师数",
+    teacher_higher:      "各市高等学校专任教师数",
+    student_primary:     "各市小学在校学生数",
+    student_middle:      "各市初中在校学生数",
+    student_high:        "各市高中在校学生数",
+    student_vocational:  "各市中等职业学校在校学生数",
+    student_higher:      "各市高等学校在校学生数"
+  };
+
+  function updateIndicator(dom, state) {
+    var key = state.subCategory || state.category;
+    var text = INDICATOR_MAP[key] || "";
+    if (dom.indicatorValue) dom.indicatorValue.textContent = text;
   }
 
   /* ==================== 下拉填充 ==================== */
@@ -452,6 +480,7 @@ var JjjResourceDetail = (function () {
 
   /* ==================== 全量渲染 ==================== */
   function renderAll(dom, data, state, geoJson) {
+    updateIndicator(dom, state);
     renderMap(dom, data, state, geoJson);
     renderBar(dom, data, state);
   }
